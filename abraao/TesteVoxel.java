@@ -193,7 +193,7 @@ public class TesteVoxel {
 		projectMatrix = new ProjectionMatrix(shaderProgram, aspectRatio);
 		worldMatrix = new WorldMatrix(shaderProgram);
 		camera = new Camera();
-//		camera.position(10, 20, 0);
+		camera.position(0, 20, 0);
 	}
 	
 	

@@ -3,7 +3,7 @@ package abraao.terrains;
 import java.util.Random;
 
 public class SimplexNoise {
-
+/*
 		double F2 = 0.5 * (Math.sqrt(3.0) - 1.0),
 		double G2 = (3.0 - Math.sqrt(3.0)) / 6.0,
 		double F3 = 1.0 / 3.0,
@@ -380,5 +380,5 @@ public class SimplexNoise {
 		if (typeof module !== 'undefined') {
 		    module.exports = SimplexNoise;
 		}
-
+*/
 }

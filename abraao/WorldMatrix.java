@@ -12,7 +12,9 @@ import org.lwjgl.BufferUtils;
 public class WorldMatrix {
 
 	private int uniformLocation;
+	private int uniformModelLocation;
 	private Matrix4f matrix;
+	private Matrix4f modelMatrix;
 
     /**
      * Field of View in Radians
@@ -25,6 +27,7 @@ public class WorldMatrix {
     
 	public WorldMatrix(ShaderProgram shaderProg) {//, float aspectRatio
 	    uniformLocation = glGetUniformLocation(shaderProg.getProgramId(), "modelViewMatrix");
+	    uniformModelLocation = glGetUniformLocation(shaderProg.getProgramId(), "modelMatrix");
 	    matrix = new Matrix4f();
 	    matrix.identity();
 //	    update(aspectRatio);
@@ -38,6 +41,10 @@ public class WorldMatrix {
 	    FloatBuffer fb = BufferUtils.createFloatBuffer(16);
 	    value.get(fb);
 	    glUniformMatrix4fv(uniformLocation, false, fb);
+	    
+	    fb = BufferUtils.createFloatBuffer(16);
+	    modelMatrix.get(fb);
+	    glUniformMatrix4fv(uniformModelLocation, false, fb);
 	}
 	
 	public void set() {
@@ -51,6 +58,8 @@ public class WorldMatrix {
         rotateZ((float)Math.toRadians(rotation.z)).
         scale(scale);
 		
+		this.modelMatrix = new Matrix4f(matrix);
+		
 		/*
 		 *  Field of View: The Field of View angle in radians. We will define a constant that holds that value
 			Aspect Ratio.
@@ -60,6 +69,7 @@ public class WorldMatrix {
 	}
 	
 	public void updateCamera(Camera camera) {
+		
 		this.set(camera.mul(matrix));
 	}
 }

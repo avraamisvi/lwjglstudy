@@ -209,7 +209,7 @@ public class ChunckRender implements Render {
 		  for(int z = 0; z < CZ; z++) {
 		  	for(int x = 0; x < CX; x++) {
 		    	
-		    	double height = map[x+10][z+30];
+		    	double height = map[x+100][z+30];
 		    	
 		    	for (int y = 0; y <= height; y++) {
 		    		blocks_array[x][y][z].active = true;
@@ -278,7 +278,7 @@ public class ChunckRender implements Render {
 							continue;
 						}
 
-						int side = blocks_array[x][y][z].type;
+						int side = blocks_array[x][y][z].front;
 
 						// Same block as previous one? Extend it.
 						if(vis && z != 0 && blocks_array[x][y][z].type == blocks_array[x][y][z - 1].type) {
@@ -314,7 +314,7 @@ public class ChunckRender implements Render {
 							continue;
 						}
 
-						int side = blocks_array[x][y][z].type;
+						int side = blocks_array[x][y][z].back;
 
 						if(vis && z != 0 && blocks_array[x][y][z].type == blocks_array[x][y][z - 1].type) {
 							vertex[i - 4] = new Vector4f(x + 1, y, z + 1, side);
@@ -347,7 +347,7 @@ public class ChunckRender implements Render {
 							continue;
 						}
 
-						int bottom = TileParser.parseBottom(blocks_array[x][y][z].type);
+						int bottom = blocks_array[x][y][z].bottom;
 
 
 						if(vis && z != 0 && blocks_array[x][y][z].type == blocks_array[x][y][z - 1].type) {
@@ -378,7 +378,7 @@ public class ChunckRender implements Render {
 							continue;
 						}
 
-						int top = TileParser.parseTop(blocks_array[x][y][z].type);
+						int top = blocks_array[x][y][z].top;
 
 
 						if(vis && z != 0 && blocks_array[x][y][z].type == blocks_array[x][y][z - 1].type) {
@@ -412,7 +412,7 @@ public class ChunckRender implements Render {
 							continue;
 						}
 
-						int side = blocks_array[x][y][z].type;
+						int side = blocks_array[x][y][z].right;
 
 						if(vis && y != 0 && blocks_array[x][y][z].type == blocks_array[x][y - 1][z].type) {
 							vertex[i - 5] = new Vector4f(x, y + 1, z, side);
@@ -445,7 +445,7 @@ public class ChunckRender implements Render {
 							continue;
 						}
 
-						int side = blocks_array[x][y][z].type;
+						int side = blocks_array[x][y][z].left;
 
 						if(vis && y != 0 && blocks_array[x][y][z].type == blocks_array[x][y - 1][z].type) {
 							vertex[i - 4] = new Vector4f(x, y + 1, z + 1, side);
@@ -663,53 +663,68 @@ public class ChunckRender implements Render {
 	
 	class Block {
 		 
-		 public static final int T_GRASS = 1;
-		 public static final int T_GRASS_TOP = 2;
-		 public static final int T_GRASS_BOTTOM = -1;
+		 public static final int T_GRASS_FRONT = 1;
+		 public static final int T_GRASS_BACK = 2;
+		 public static final int T_GRASS_LEFT = 3;
+		 public static final int T_GRASS_RIGHT = 4;
+		 public static final int T_GRASS_TOP = 5;
+		 public static final int T_GRASS_BOTTOM = 6;
 		 
 		 static final int T_ROCK = 3;
 		 static final int T_ROCK_TOP = 4;
 		 static final int T_ROCK_BOTTOM = -3;
 		
 		 int y;
-		 int type = T_GRASS;
+		 int front = T_GRASS_FRONT;
+		 int back = T_GRASS_BACK;
+		 int left = T_GRASS_LEFT;
+		 int right = T_GRASS_RIGHT;
+		 int top = T_GRASS_TOP;
+		 int bottom = T_GRASS_BOTTOM;
+		 
+		 BlockTypes type = BlockTypes.T_GRASS;
+		 
 		 List<Vector3f> verts = new ArrayList<>();
 		 boolean active = false;
 		 boolean blocked = false;
 	}
 	
-	static class TileParser {
-		
-		public static int parseBottom(int type) {
-			int ret = 1;
-			
-			switch (type) {
-			case Block.T_GRASS:
-				ret = Block.T_GRASS_BOTTOM;
-				break;
-
-			default:
-				break;
-			}
-			
-			return ret;
-		}
-		
-		public static int parseTop(int type) {
-			int ret = 1;
-			
-			switch (type) {
-			case Block.T_GRASS:
-				ret = Block.T_GRASS_TOP;
-				break;
-
-			default:
-				break;
-			}
-			
-			return ret;
-		}		
-	}	
+	enum BlockTypes {
+		T_GRASS
+	}
+	
+//	static class TileParser {
+//		
+//		public static int parseBottom(int type) {
+//			int ret = 1;
+//			
+//			switch (type) {
+//			case Block.T_GRASS:
+//				ret = Block.T_GRASS_BOTTOM;
+//				break;
+//
+//			default:
+//				break;
+//			}
+//			
+//			return ret;
+//		}
+//		
+//		public static int parseTop(int type) {
+//			int ret = 1;
+//			
+//			switch (type) {
+//			case Block.T_GRASS:
+//				ret = Block.T_GRASS_TOP;
+//				break;
+//
+//			default:
+//				break;
+//			}
+//			
+//			return ret;
+//		}		
+//	}	
 	
 //	public void criarMontanhas(Block blocks[][][]) {
 //		   
